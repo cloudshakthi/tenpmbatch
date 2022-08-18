@@ -1,0 +1,62 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "variables": {
+        "location": "westus3",
+        "extendedLocation": {},
+        "virtualNetworkName": "VNet4",
+        "resourceGroup": "WestUS3-RG1",
+        "addressSpaces": "192.168.51.0/24",
+        "ipv6Enabled": false,
+        "subnetCount": 1,
+        "subnet0_name": "Subnet1",
+        "subnet0_addressRange": "192.168.51.32/27",
+		"subnet1_name": "Subnet2",
+        "subnet1_addressRange": "192.168.51.64/27",
+		"subnet2_name": "Subnet3",
+        "subnet2_addressRange": "192.168.51.96/27",
+        "ddosProtectionPlanEnabled": false,
+        "firewallEnabled": false,
+        "bastionEnabled": false
+    },
+    
+    "resources": [
+        {
+            "name": "[variables('virtualNetworkName')]",
+            "type": "Microsoft.Network/VirtualNetworks",
+            "apiVersion": "2021-01-01",
+            "location": "[variables('location')]",
+            "extendedLocation": "[if(empty(variables('extendedLocation')), json('null'), variables('extendedLocation'))]",
+            "dependsOn": [],
+            "tags": {},
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('addressSpaces')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('subnet0_name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet0_addressRange')]"
+                        }
+                    },
+					{
+                        "name": "[variables('subnet1_name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet1_addressRange')]"
+                        }
+                    },
+					{
+                        "name": "[variables('subnet2_name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet2_addressRange')]"
+                        }
+                    }
+                ],
+                "enableDdosProtection": "[variables('ddosProtectionPlanEnabled')]"
+            }
+        }
+    ]
+}
